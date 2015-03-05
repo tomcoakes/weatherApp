@@ -13,23 +13,24 @@ $( "form" ).submit(function() {
       conditionsCode = data.weather[0].id;
       country = data.sys.country;
       weatherIcon = weather(conditionsCode);
+      $("div.weather").toggleClass(function() {
+        return (weather(conditionsCode));
+      });
       $('.temperature').text(temp);
       $('.city').text(city+", "+country);
-      $('img').attr('src', 'images/' + weatherIcon + '.svg')
+      $('img').attr('src', 'images/' + weatherIcon + '.svg');
+
     } else {
       $('.city').text("City not recognised");
     };
-
   });
 });
 
 weather = function(code) {
-  if (code == 801) {
-    result = "sunny";
-  } else {
-    result = "cloudy";
-  }
-return result;
+  if(code < 600) { result = "rain"};
+  if(code < 700) { result = "snow"};
+  (code < 802 || code == 904) ? result = "sunny" : result = "cloudy";
+  return result;
 };
 
 
