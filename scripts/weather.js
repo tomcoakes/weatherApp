@@ -1,24 +1,23 @@
-
-
 $( "form" ).submit(function() {
   ( result = $("input:first" ).val());
   
   $.getJSON('http://api.openweathermap.org/data/2.5/weather?q='+result, function(data) {
-    
-    setTimeout(function() {
 
       status = data.cod;
 
+      $('.icon').attr('class','icon');
+
       if(status == 200) {
+
         temp = Math.round(data.main.temp - 273.15);
         city = data.name;
         conditions = data.weather[0].main;
         conditionsCode = data.weather[0].id;
         country = data.sys.country;
         weatherIcon = weather(conditionsCode);
-        $("div.weather").toggleClass(function() {
-          return (weather(conditionsCode));
-        });
+
+        $('.icon').addClass(weatherIcon);
+
         $('.temperature').text(temp);
         $('.city').text(city+", "+country);
         $('img').attr('src', 'images/' + weatherIcon + '.svg');
@@ -26,8 +25,6 @@ $( "form" ).submit(function() {
       } else {
         $('.city').text("City not recognised");
       };
-
-    }, 0);
   });
 });
 
