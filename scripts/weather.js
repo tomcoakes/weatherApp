@@ -9,9 +9,13 @@ $( "form" ).submit(function() {
     if(status == 200) {
       temp = Math.round(data.main.temp - 273.15);
       city = data.name;
+      conditions = data.weather[0].main;
+      conditionsCode = data.weather[0].id;
       country = data.sys.country;
+      weatherIcon = weather(conditionsCode);
       $('.temperature').text(temp);
       $('.city').text(city+", "+country);
+      $('img').attr('src', 'images/' + weatherIcon + '.svg')
     } else {
       $('.city').text("City not recognised");
     };
@@ -19,17 +23,11 @@ $( "form" ).submit(function() {
   });
 });
 
-
-
-
-var apiData = ["London", "Paris"];
-var temperature = 22;
-var weatherIcon = 'snow';
-
-$.each(apiData, function(index, city) {
-  $('.cities').append(
-    $('<option></option>').val(city).html(city + " ⌄")
-  );
-});
-
-$('img').attr('src', 'images/' + weatherIcon + '.svg')
+weather = function(code) {
+  if (code == 801) {
+    result = "sunny";
+  } else {
+    result = "cloudy";
+  }
+return result;
+};
