@@ -2,12 +2,20 @@
 
 $( "form" ).submit(function() {
   ( result = $("input:first" ).val());
-  $( "city" ).text( result ).show();
+  
+  $.getJSON('http://api.openweathermap.org/data/2.5/weather?q='+result, function(data) {
+    status = data.cod;
+    
+    if(status == 200) {
+      temp = Math.round(data.main.temp - 273.15);
+      city = data.name;
+      country = data.sys.country;
+      $('.temperature').text(temp);
+      $('.city').text(city+", "+country);
+    } else {
+      $('.city').text("City not recognised");
+    };
 
-    $.getJSON('http://api.openweathermap.org/data/2.5/weather?q='+result, function(data) {
-    temp = Math.round(data["main"]["temp"] - 273.15);
-
-    $('.temperature').text(temp);
   });
 });
 
